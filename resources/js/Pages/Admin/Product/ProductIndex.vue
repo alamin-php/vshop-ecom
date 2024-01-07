@@ -12,8 +12,8 @@ const searchValue = ref();
 
 const Header = [
     { text: "PRODUCT NAME", value: "title" },
-    { text: "CATEGORY", value: "category_id" },
-    { text: "BRAND", value: "brand_id" },
+    { text: "CATEGORY", value: "category.name" },
+    { text: "BRAND", value: "brand.name" },
     { text: "PRICE", value: "price" },
     { text: "STOCK", value: "inStock" },
     { text: "PUBLISH", value: "published" },
@@ -45,6 +45,14 @@ const Header = [
                                     <button class="text-red-400 text-sm hover:text-red-600 transition duration-300"
                                         @click="deleteData(id)">Delete</button>
                                 </div>
+                            </template>
+                            <template #item-published="{ published }">
+                                <span class="px-3 py-2 text-xs font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" v-if="1 === published">Published</span>
+                                <span class="px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" v-else>Unpublished</span>
+                            </template>
+                            <template #item-inStock="{ inStock }">
+                                <span class="px-3 py-2 text-xs font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" v-if="1 === inStock">In Stock</span>
+                                <span class="px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" v-else>Out of stock</span>
                             </template>
                         </DataTable>
                     </div>

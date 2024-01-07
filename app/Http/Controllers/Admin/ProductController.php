@@ -18,7 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->get();
+        $products = Product::with(['brand','category'])->latest()->get();
         return Inertia::render('Admin/Product/ProductIndex',['products'=>$products]);
     }
 
@@ -78,8 +78,14 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = Product::where('id',$id)->first();
-        return Inertia::render('Admin/Product/ProductEdit',['product'=>$product]);
+        $product = Product::with(['product_images'])->where('id',$id)->first();
+        $category = Category::all();
+        $brand = Brand::all();
+        return Inertia::render('Admin/Product/ProductEdit',[
+            'product'=>$product,
+            'categories'=>$category,
+            'brands'=>$brand
+        ]);
     }
 
     /**

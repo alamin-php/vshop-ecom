@@ -27,16 +27,6 @@ const handleRemove = (file) => {
     console.log(file)
 }
 
-// const form = useForm({
-//     title: "",
-//     price: "",
-//     quantity: "",
-//     category_id: "",
-//     brand_id: "",
-//     description: "",
-//     product_images: [],
-// })
-
 // product from data
 const id = ref('');
 const title = ref('');
@@ -48,25 +38,6 @@ const description = ref('');
 const product_images = ref('');
 const published = ref('');
 const inStock = ref('');
-
-// const submit = () => {
-//     try {
-//         form.post(route('admin.products.store'), {
-//             onSuccess: () => {
-//                 form.reset(),
-//                     Swal.fire({
-//                         icon: "success",
-//                         title: page.props.flash.message
-//                     })
-//             }
-//         });
-//     } catch (error) {
-//         Swal.fire({
-//             icon: "error",
-//             title: 'Something went wrong'
-//         })
-//     }
-// }
 
 const submit = async () => {
     const formData = new FormData();
