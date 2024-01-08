@@ -40,6 +40,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'redirectAdmin'], function ()
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::delete('/products/image/{id}',[ ProductController::class, 'deleteImage'])->name('admin.products.image.delete');
     Route::resource('/products', ProductController::class, ['as' => 'admin']);
 });
 

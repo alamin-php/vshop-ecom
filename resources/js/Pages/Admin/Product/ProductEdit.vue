@@ -39,20 +39,22 @@ const product_images = props.product?.product_images;
 const published = ref('');
 const inStock = ref('');
 
-const submit = async () => {
+const submit = () => {
     const formData = new FormData();
+    formData.append('id', id.value);
     formData.append('title', title.value);
     formData.append('price', price.value);
     formData.append('quantity', quantity.value);
     formData.append('category_id', category_id.value);
     formData.append('brand_id', brand_id.value);
     formData.append('description', description.value);
+    formData.append('_method', 'PUT');
     for (const image of productImages.value) {
         formData.append('product_images[]', image.raw)
     }
 
     try {
-        await router.post(route('admin.products.store'), formData, {
+        router.post('/admin/products/'+id.value,formData, {
             onSuccess: page => {
                 Swal.fire({
                     icon: "success",
@@ -65,8 +67,36 @@ const submit = async () => {
     }
 }
 
-const removeImage = (index) =>{
-    alert(index)
+// const submit = () => {
+//     try {
+//         router.post('/admin/products/'+id.value,formData, {
+//         },{
+//             onSuccess: page => {
+//                  Swal.fire({
+//                     icon: "success",
+//                      title: page.props.flash.message
+//                  })
+//              }
+//         });
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+
+const removeImage = async (pimage, index) => {
+    try {
+        await router.delete(route('admin.products.image.delete', pimage.id), {
+            onSuccess: (page) => {
+                Swal.fire({
+                    icon: "success",
+                    title: page.props.flash.message
+                });
+                product_images.value.splice(index, 1);
+            }
+        })
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 </script>
@@ -82,9 +112,10 @@ const removeImage = (index) =>{
                             class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                         Back</Link>
                     </div>
+                    {{ id }}
                     <form @submit.prevent="submit">
                         <div class="mb-4">
-                            <input v-model="id" type="hidden" id="title_id" placeholder="Enter product title"
+                            <input v-model="id" type="hidden" id="id" placeholder="Enter product title"
                                 class="border border-gray-300 px-2 py-1 rounded w-full">
                             <p class="text-red-600 dark:text-red-300 mb-6"></p>
                         </div>
@@ -144,9 +175,9 @@ const removeImage = (index) =>{
                             </el-upload>
                         </div>
                         <div class="mb-4 flex flex-nowrap">
-                            <div class="relative" v-for="(pimage,index) in product_images" :key="index">
-                                <img class="w-32 h-28 rounded" :src="'/storage/'+pimage.image" alt="">
-                                <span @click="removeImage(index)"
+                            <div class="relative" v-for="(pimage, index) in product_images" :key="index">
+                                <img class="w-32 h-28 rounded" :src="'/storage/' + pimage.image" alt="">
+                                <span @click="removeImage(pimage, index)"
                                     class="cursor-pointer absolute top-0 left-28 transform -translate-y-1/2 w-3.5 h-3.5 bg-red-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
                             </div>
                         </div>
